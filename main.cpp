@@ -51,8 +51,12 @@ int main()
             cout << "Expense Name: ";
             cin >> expenseName;
             cout << endl;
-            cout << "Amount: ";
-            cin >> amount;
+            cout<<"Enter amount: ";
+            cin>>amount;
+            while(amount<0){
+                cout<<"Enter a valid amount(>=0): ";
+                cin>>amount;
+            }
             cout << endl;
             cout << "Category: ";
             cin >> category;
@@ -87,25 +91,22 @@ int main()
             }
             cout << totalspending << endl;
             cout << "next choice> ";
+            cout<<endl;
             break;
         }
         case 4:
         {
             cout << "Expenses by Category: " << endl;
-            for (const auto& e : expenseVector)
-            {
-                cout << e.category << " : ";
-                int spending = 0;
-                for (const auto& j : expenseVector)
-                {
-                    if (e.category == j.category)
-                    {
-                        spending += j.amount;
-                    }
-                }
-                cout << spending << endl;
+            unordered_map<string,int> map;
+            for(const auto& e: expenseVector){
+                map[e.category] += e.amount;
             }
+            for(auto &it:map){
+                cout<<it.first<<" : "<<it.second<<endl;
+            }
+            cout<<endl;
             cout << "next choice? ";
+            cout<<endl;
             break;
         }
         case 5:
@@ -138,11 +139,13 @@ int main()
         case 6:
         {
             menu = false;
+            cout<<"Thanks for using the expense tracker";
             break;
         }
         default:
         {
-            cout << "Enter a valid choice : ";
+            cout << "Enter a valid choice : "<<endl;
+            cout<<endl;
         }
         }
     }
