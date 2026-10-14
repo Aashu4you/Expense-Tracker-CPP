@@ -40,6 +40,13 @@ int main()
         cout << "Enter your choice: ";
         int mychoice;
         cin >> mychoice;
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout<<"Invalid Input , Try again !!! \n";
+            cout<<"Enter your choice: ";
+            cin>>mychoice;
+        }
         switch (mychoice)
         {
         case 1:
@@ -53,7 +60,9 @@ int main()
             cout << endl;
             cout<<"Enter amount: ";
             cin>>amount;
-            while(amount<0){
+            while(cin.fail() || amount<=0){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(),'\n');
                 cout<<"Enter a valid amount(>=0): ";
                 cin>>amount;
             }
@@ -122,6 +131,7 @@ int main()
                 cout << e.expensename << " : " << e.amount << "  " << e.category << endl;
             }
             cout << "Enter the expense name you want to delete : ";
+            bool deleted = false;
             string name;
             cin >> name;
             for (int i = 0; i < expenseVector.size(); i++)
@@ -129,9 +139,14 @@ int main()
                 if (expenseVector[i].expensename == name)
                 {
                     expenseVector.erase(expenseVector.begin() + i);
-                    cout << "Deleted Successfully!!" << endl;
+                    deleted = true;
                     break;
                 }
+            }
+            if(deleted){
+                cout<<"Expense deleted Successfully!!"<<endl;
+            }else{
+                cout<<"Expense not found!"<<endl;
             }
             cout << "next choice? " << endl;
             break;
@@ -149,4 +164,5 @@ int main()
         }
         }
     }
+    return 0;
 }
