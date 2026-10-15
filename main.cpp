@@ -40,7 +40,7 @@ int main()
         cout << "Enter your choice: ";
         int mychoice;
         cin >> mychoice;
-        if(cin.fail()){
+        while(cin.fail()){
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
             cout<<"Invalid Input , Try again !!! \n";
@@ -63,7 +63,7 @@ int main()
             while(cin.fail() || amount<=0){
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(),'\n');
-                cout<<"Enter a valid amount(>=0): ";
+                cout<<"Enter a valid amount(> 0): ";
                 cin>>amount;
             }
             cout << endl;
@@ -106,11 +106,11 @@ int main()
         case 4:
         {
             cout << "Expenses by Category: " << endl;
-            unordered_map<string,int> map;
+            unordered_map<string,int> categoryTotals;
             for(const auto& e: expenseVector){
-                map[e.category] += e.amount;
+                categoryTotals[e.category] += e.amount;
             }
-            for(auto &it:map){
+            for(auto &it:categoryTotals){
                 cout<<it.first<<" : "<<it.second<<endl;
             }
             cout<<endl;
