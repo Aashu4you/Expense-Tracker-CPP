@@ -17,17 +17,37 @@ struct Expense
     }
 };
 
-void saveExpenses(const vector<Expense>& exp){
+void saveExpenses(const vector<Expense> &exp)
+{
     ofstream fout("expenses.txt");
-    if(!fout){
-        cout<<"Error opening file!"<<endl;
+    if (!fout)
+    {
+        cout << "Error opening file!" << endl;
         return;
     }
-    int n =exp.size();
-    for(const auto& e:exp){
-        fout<<e.expensename<<" "<<e.amount<<" "<<e.category<<endl;
+    int n = exp.size();
+    for (const auto &e : exp)
+    {
+        fout << e.expensename << " " << e.amount << " " << e.category << endl;
     }
     fout.close();
+}
+
+void loadExpense(vector<Expense> &exp)
+{
+    ifstream fin("expenses.txt");
+    if (!fin)
+    {
+        cout << "Error opening file!" << endl;
+        return;
+    }
+    string ename, ecat;
+    int amt;
+    while (fin >> ename >> amt >> ecat)
+    {
+        exp.push_back({amt, ecat, ename});
+    }
+    fin.close();
 }
 
 int main()
@@ -35,6 +55,7 @@ int main()
 
     bool menu = true;
     vector<Expense> expenseVector;
+    loadExpense(expenseVector);
     while (menu)
     {
         cout << "========================================================" << endl;
@@ -53,12 +74,13 @@ int main()
         cout << "Enter your choice: ";
         int mychoice;
         cin >> mychoice;
-        while(cin.fail()){
+        while (cin.fail())
+        {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout<<"Invalid Input , Try again !!! \n";
-            cout<<"Enter your choice: ";
-            cin>>mychoice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid Input , Try again !!! \n";
+            cout << "Enter your choice: ";
+            cin >> mychoice;
         }
         switch (mychoice)
         {
@@ -71,13 +93,14 @@ int main()
             cout << "Expense Name: ";
             cin >> expenseName;
             cout << endl;
-            cout<<"Enter amount: ";
-            cin>>amount;
-            while(cin.fail() || amount<=0){
+            cout << "Enter amount: ";
+            cin >> amount;
+            while (cin.fail() || amount <= 0)
+            {
                 cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(),'\n');
-                cout<<"Enter a valid amount(> 0): ";
-                cin>>amount;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Enter a valid amount(> 0): ";
+                cin >> amount;
             }
             cout << endl;
             cout << "Category: ";
@@ -97,7 +120,7 @@ int main()
                 cout << "No expense added yet!!" << endl;
                 break;
             }
-            for (const auto& e : expenseVector)
+            for (const auto &e : expenseVector)
             {
                 cout << e.expensename << " : " << e.amount << "  " << e.category << endl;
             }
@@ -108,28 +131,30 @@ int main()
         {
             cout << "Total Spending: ";
             int totalspending = 0;
-            for (const auto& e : expenseVector)
+            for (const auto &e : expenseVector)
             {
                 totalspending += e.amount;
             }
             cout << totalspending << endl;
             cout << "next choice> ";
-            cout<<endl;
+            cout << endl;
             break;
         }
         case 4:
         {
             cout << "Expenses by Category: " << endl;
-            unordered_map<string,int> categoryTotals;
-            for(const auto& e: expenseVector){
+            unordered_map<string, int> categoryTotals;
+            for (const auto &e : expenseVector)
+            {
                 categoryTotals[e.category] += e.amount;
             }
-            for(auto &it:categoryTotals){
-                cout<<it.first<<" : "<<it.second<<endl;
+            for (auto &it : categoryTotals)
+            {
+                cout << it.first << " : " << it.second << endl;
             }
-            cout<<endl;
+            cout << endl;
             cout << "next choice? ";
-            cout<<endl;
+            cout << endl;
             break;
         }
         case 5:
@@ -140,7 +165,7 @@ int main()
                 cout << "No expenses added yet!!" << endl;
                 break;
             }
-            for (const auto& e : expenseVector)
+            for (const auto &e : expenseVector)
             {
                 cout << e.expensename << " : " << e.amount << "  " << e.category << endl;
             }
@@ -157,10 +182,15 @@ int main()
                     break;
                 }
             }
-            if(deleted){
-                cout<<"Expense deleted Successfully!!"<<endl;
-            }else{
-                cout<<"Expense not found!"<<endl;
+            if (deleted)
+            {
+                
+                cout << "Expense deleted Successfully!!" << endl;
+                saveExpenses(expenseVector);
+            }
+            else
+            {
+                cout << "Expense not found!" << endl;
             }
             cout << "next choice? " << endl;
             break;
@@ -168,13 +198,13 @@ int main()
         case 6:
         {
             menu = false;
-            cout<<"Thanks for using the expense tracker";
+            cout << "Thanks for using the expense tracker";
             break;
         }
         default:
         {
-            cout << "Enter a valid choice : "<<endl;
-            cout<<endl;
+            cout << "Enter a valid choice : " << endl;
+            cout << endl;
         }
         }
     }
