@@ -1,1 +1,4 @@
-Lunch 50 Food
+Lunch 500 Food
+Movie 90 Entertainment
+Dinner 200 Food
+Gym 600 Health

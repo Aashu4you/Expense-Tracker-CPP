@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include <map>
-#include <string>
+#include <fstream>
 using namespace std;
 
 struct Expense
@@ -16,6 +16,19 @@ struct Expense
         this->expensename = expensename;
     }
 };
+
+void saveExpenses(const vector<Expense>& exp){
+    ofstream fout("expenses.txt");
+    if(!fout){
+        cout<<"Error opening file!"<<endl;
+        return;
+    }
+    int n =exp.size();
+    for(const auto& e:exp){
+        fout<<e.expensename<<" "<<e.amount<<" "<<e.category<<endl;
+    }
+    fout.close();
+}
 
 int main()
 {
@@ -71,6 +84,7 @@ int main()
             cin >> category;
             Expense exp(amount, category, expenseName);
             expenseVector.push_back(exp);
+            saveExpenses(expenseVector);
             cout << endl;
             cout << "Added Successfully!!" << endl;
             break;
